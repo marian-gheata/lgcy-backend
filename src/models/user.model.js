@@ -35,6 +35,26 @@ const userSchema = mongoose.Schema(
       },
       private: true, // used by the toJSON plugin
     },
+    phonenumber: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    birthday: {
+      type: Date,
+      require: true,
+      validate(value) {
+        if (!value.match(/^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/)) {
+          throw new Error('Please enter birthday type correctly');
+        }
+      },
+    },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
     role: {
       type: String,
       enum: roles,
