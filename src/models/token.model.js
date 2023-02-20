@@ -9,6 +9,11 @@ const tokenSchema = mongoose.Schema(
       required: true,
       index: true,
     },
+    otp: {
+      type: String,
+      require: false,
+      maxlength: 6,
+    },
     user: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'User',

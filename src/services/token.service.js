@@ -25,6 +25,11 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
   return jwt.sign(payload, secret);
 };
 
+const generateOtp = async () => {
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  return otp;
+};
+
 /**
  * Save a token
  * @param {string} token
@@ -34,9 +39,10 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
  * @param {boolean} [blacklisted]
  * @returns {Promise<Token>}
  */
-const saveToken = async (token, userId, expires, type, blacklisted = false) => {
+const saveToken = async (token, otp, userId, expires, type, blacklisted = false) => {
   const tokenDoc = await Token.create({
     token,
+    otp,
     user: userId,
     expires: expires.toDate(),
     type,
@@ -51,9 +57,9 @@ const saveToken = async (token, userId, expires, type, blacklisted = false) => {
  * @param {string} type
  * @returns {Promise<Token>}
  */
-const verifyToken = async (token, type) => {
+const verifyToken = async (token, type, otp) => {
   const payload = jwt.verify(token, config.jwt.secret);
-  const tokenDoc = await Token.findOne({ token, type, user: payload.sub, blacklisted: false });
+  const tokenDoc = await Token.findOne({ token, type, user: payload.sub, blacklisted: false, otp });
   if (!tokenDoc) {
     throw new Error('Token not found');
   }
@@ -71,7 +77,8 @@ const generateAuthTokens = async (user) => {
 
   const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
   const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
-  await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
+  const otp = await generateOtp();
+  await saveToken(refreshToken, otp, user.id, refreshTokenExpires, tokenTypes.REFRESH);
 
   return {
     access: {
@@ -97,8 +104,9 @@ const generateResetPasswordToken = async (email) => {
   }
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
   const resetPasswordToken = generateToken(user.id, expires, tokenTypes.RESET_PASSWORD);
-  await saveToken(resetPasswordToken, user.id, expires, tokenTypes.RESET_PASSWORD);
-  return resetPasswordToken;
+  const otp = await generateOtp();
+  await saveToken(resetPasswordToken, otp, user.id, expires, tokenTypes.RESET_PASSWORD);
+  return otp;
 };
 
 /**
@@ -109,8 +117,9 @@ const generateResetPasswordToken = async (email) => {
 const generateVerifyEmailToken = async (user) => {
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
   const verifyEmailToken = generateToken(user.id, expires, tokenTypes.VERIFY_EMAIL);
-  await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);
-  return verifyEmailToken;
+  const otp = await generateOtp();
+  await saveToken(verifyEmailToken, otp, user.id, expires, tokenTypes.VERIFY_EMAIL);
+  return otp;
 };
 
 module.exports = {
@@ -120,4 +129,5 @@ module.exports = {
   generateAuthTokens,
   generateResetPasswordToken,
   generateVerifyEmailToken,
+  generateOtp,
 };
