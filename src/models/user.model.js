@@ -42,9 +42,9 @@ const userSchema = mongoose.Schema(
     },
     birthday: {
       type: String,
-      require: true,
+      required: true,
       validate(value) {
-        if (!value.match(/^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/)) {
+        if (!value.match(/^(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])-\d{4}$/)) {
           throw new Error('Please enter birthday type correctly');
         }
       },
@@ -54,6 +54,23 @@ const userSchema = mongoose.Schema(
       required: true,
       unique: true,
       trim: true,
+    },
+    description: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    link: {
+      type: String,
+      trim: true,
+    },
+    notification: {
+      type: Boolean,
+      default: true,
+    },
+    directMessage: {
+      type: Boolean,
+      default: true,
     },
     role: {
       type: String,
@@ -82,6 +99,17 @@ userSchema.plugin(paginate);
  */
 userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
   const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+  return !!user;
+};
+
+/**
+ * Check if username is taken
+ * @param {string} username - The user's email
+ * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
+ * @returns {Promise<boolean>}
+ */
+userSchema.statics.isUsernameTaken = async function (username, excludeUserId) {
+  const user = await this.findOne({ username, _id: { $ne: excludeUserId } });
   return !!user;
 };
 

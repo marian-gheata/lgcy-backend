@@ -9,6 +9,11 @@ const register = {
     phonenumber: Joi.string().required(),
     username: Joi.string().required(),
     birthday: Joi.string().required(),
+    description: Joi.string(),
+    link: Joi.string(),
+    notification: Joi.boolean(),
+    directMessage: Joi.boolean(),
+    role: Joi.string().valid('user', 'admin'),
   }),
 };
 
