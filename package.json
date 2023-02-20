@@ -1,18 +1,18 @@
 {
-  "name": "create-nodejs-express-app",
-  "version": "1.7.0",
-  "description": "Create a Node.js app for building production-ready RESTful APIs using Express, by running one command",
+  "name": "lgcy-backend",
+  "version": "0.1.0",
+  "description": "Lgcy Backend Server",
   "bin": "bin/createNodejsApp.js",
   "main": "src/index.js",
-  "repository": "https://github.com/hagopj13/node-express-boilerplate.git",
-  "author": "Hagop Jamkojian <hagopj13@gmail.com>",
+  "repository": "https://github.com/lgcyofficial/lgcy.Marian.git",
+  "author": "Marian Gheata <marian960035@gmail.com>",
   "license": "MIT",
   "engines": {
     "node": ">=12.0.0"
   },
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
-    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/index.js --inspect",
     "test": "jest -i --colors --verbose --detectOpenHandles",
     "test:watch": "jest -i --watchAll",
     "coverage": "jest -i --coverage",
