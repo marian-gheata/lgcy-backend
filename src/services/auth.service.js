@@ -1,9 +1,11 @@
 const httpStatus = require('http-status');
+const jwt = require('jsonwebtoken');
 const tokenService = require('./token.service');
 const userService = require('./user.service');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
+const config = require('../config/config');
 
 /**
  * Login with username and password
@@ -91,10 +93,26 @@ const verifyEmail = async (verifyEmailToken, otp) => {
   }
 };
 
+/**
+ * Get userId
+ * @param {string} authorization
+ * @returns {Promise<String>}
+ */
+const getUserIdFromToken = async (authorization) => {
+  const authToken = authorization.split(' ')[1];
+  try {
+    const decoded = await jwt.verify(authToken, config.jwt.secret);
+    return decoded.sub;
+  } catch (e) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'unauthorized');
+  }
+};
+
 module.exports = {
   loginUserWithEmailAndPassword,
   logout,
   refreshAuth,
   resetPassword,
   verifyEmail,
+  getUserIdFromToken,
 };

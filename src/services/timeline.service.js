@@ -1,9 +1,12 @@
 const httpStatus = require('http-status');
+const { authService } = require('.');
 const { Timeline } = require('../models');
 const ApiError = require('../utils/ApiError');
 
-const createTimeline = async (timelineBody) => {
-  return Timeline.create(timelineBody);
+const createTimeline = async (timelineBody, authorization) => {
+  const userId = await authService.getUserIdFromToken(authorization);
+  const creator = { creator: userId };
+  return Timeline.create({ ...timelineBody, ...creator });
 };
 
 /**

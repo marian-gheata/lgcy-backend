@@ -43,6 +43,7 @@ const updateTimeline = {
         followerShown: Joi.boolean(),
         inviters: Joi.array().items(Joi.string().custom(objectId)),
       }),
+      creator: Joi.required().custom(objectId),
     })
     .min(1),
 };

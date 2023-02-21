@@ -5,7 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const { timelineService } = require('../services');
 
 const createTimeline = catchAsync(async (req, res) => {
-  const timeline = await timelineService.createTimeline(req.body);
+  const timeline = await timelineService.createTimeline(req.body, req.headers.authorization);
   res.status(httpStatus.CREATED).send(timeline);
 });
 

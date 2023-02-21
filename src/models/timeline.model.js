@@ -29,6 +29,10 @@ const timelineSchema = mongoose.Schema(
         default: [],
       },
     },
+    creator: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
   },
   {
     timestamps: true,
