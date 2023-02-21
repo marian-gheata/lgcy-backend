@@ -43,14 +43,13 @@ const updateTimeline = {
         followerShown: Joi.boolean(),
         inviters: Joi.array().items(Joi.string().custom(objectId)),
       }),
-      creator: Joi.required().custom(objectId),
     })
     .min(1),
 };
 
 const deleteTimeline = {
   params: Joi.object().keys({
-    userId: Joi.string().custom(objectId),
+    timelineId: Joi.string().custom(objectId),
   }),
 };
 
