@@ -36,8 +36,8 @@ const updateTimeline = {
   }),
   body: Joi.object()
     .keys({
-      title: Joi.string().required(),
-      description: Joi.string().required(),
+      title: Joi.string(),
+      description: Joi.string(),
       status: Joi.object().keys({
         value: Joi.string(),
         followerShown: Joi.boolean(),
