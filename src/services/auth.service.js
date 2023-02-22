@@ -39,9 +39,9 @@ const logout = async (refreshToken) => {
  * @param {string} refreshToken
  * @returns {Promise<Object>}
  */
-const refreshAuth = async (refreshToken, otp) => {
+const refreshAuth = async (refreshToken) => {
   try {
-    const refreshTokenDoc = await tokenService.verifyToken(refreshToken, tokenTypes.REFRESH, otp);
+    const refreshTokenDoc = await tokenService.verifyToken(refreshToken, tokenTypes.REFRESH);
     const user = await userService.getUserById(refreshTokenDoc.user);
     if (!user) {
       throw new Error();
