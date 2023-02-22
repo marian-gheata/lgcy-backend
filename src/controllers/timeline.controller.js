@@ -25,7 +25,7 @@ const getTimeline = catchAsync(async (req, res) => {
 });
 
 const updateTimeline = catchAsync(async (req, res) => {
-  const timeline = await timelineService.updateTimelineById(req.params.timelineId, req.body);
+  const timeline = await timelineService.updateTimelineById(req.params.timelineId, req.body, req.headers.authorization);
   res.send(timeline);
 });
 
