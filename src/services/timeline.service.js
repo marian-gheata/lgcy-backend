@@ -38,12 +38,14 @@ const getTimelineById = async (id) => {
  * @param {Object} updateBody
  * @returns {Promise<Timeline>}
  */
-const updateTimelineById = async (timelineId, updateBody) => {
+const updateTimelineById = async (timelineId, updateBody, authorization) => {
+  const userId = await authService.getUserIdFromToken(authorization);
+  const creator = { creator: userId };
   const timeline = await getTimelineById(timelineId);
   if (!timeline) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Timeline not found');
   }
-  Object.assign(timeline, updateBody);
+  Object.assign(timeline, { ...updateBody, ...creator });
   await timeline.save();
   return timeline;
 };
