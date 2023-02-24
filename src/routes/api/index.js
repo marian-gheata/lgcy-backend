@@ -3,6 +3,7 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const timelineRoute = require('./timeline.route');
 const postRoute = require('./post.route');
+const notificationRoute = require('./notification.route');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -24,6 +25,10 @@ const defaultRoutes = [
   {
     path: '/posts',
     route: postRoute,
+  },
+  {
+    path: '/notifications',
+    route: notificationRoute,
   },
 ];
 
