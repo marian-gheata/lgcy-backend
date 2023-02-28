@@ -45,7 +45,9 @@ module.exports = router;
  *               - name
  *               - email
  *               - password
- *               - role
+ *               - phonenumber
+ *               - username
+ *               - birthday
  *             properties:
  *               name:
  *                 type: string
@@ -58,14 +60,36 @@ module.exports = router;
  *                 format: password
  *                 minLength: 8
  *                 description: At least one number and one letter
- *               role:
- *                  type: string
- *                  enum: [user, admin]
+ *               username:
+ *                 type: string
+ *               phonenumber:
+ *                 type: string
+ *               birthday:
+ *                 type: string
+ *                 minLength: 8
+ *                 description: MM-DD-YYYY
+ *               description:
+ *                 type: string
+ *                 format: password
+ *                 minLength: 8
+ *                 description: At least one number and one letter
+ *               link:
+ *                 type: string
+ *                 description: Your personal link
+ *               directMessage:
+ *                 type: boolean
+ *               notification:
+ *                 type: boolean
  *             example:
  *               name: fake name
  *               email: fake@example.com
- *               password: password1
- *               role: user
+ *               username: fakeuser
+ *               phonenumber: +1 111 111 1111
+ *               birthday: 03-01-1998
+ *               description: This is fake user for test
+ *               link: https://www.lgcy.io/@fakeuser
+ *               directMessage: true
+ *               notification: true
  *     responses:
  *       "201":
  *         description: Created
@@ -97,6 +121,11 @@ module.exports = router;
  *         schema:
  *           type: string
  *         description: User role
+ *       - in: query
+ *         name: username
+ *         schema:
+ *           type: string
+ *         description: Username
  *       - in: query
  *         name: sortBy
  *         schema:
@@ -207,10 +236,31 @@ module.exports = router;
  *                 format: password
  *                 minLength: 8
  *                 description: At least one number and one letter
+ *               username:
+ *                 type: string
+ *               phonenumber:
+ *                 type: string
+ *               birthday:
+ *                 type: string
+ *                 description: MM-DD-YYYY
+ *               description:
+ *                 type: string
+ *               link:
+ *                 type: string
+ *                 description: Personal link
+ *               directMessage:
+ *                 type: boolean
+ *               notification:
+ *                 type: boolean
  *             example:
- *               name: fake name
- *               email: fake@example.com
- *               password: password1
+ *               name: updated name
+ *               email: update@example.com
+ *               username: password1
+ *               phonenumber: +1 211 155 3335
+ *               description: This is updated user
+ *               link: password1
+ *               directMessage: true
+ *               notification: true
  *     responses:
  *       "200":
  *         description: OK
